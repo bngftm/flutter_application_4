@@ -92,7 +92,7 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
                 icon: Icon(Icons.business),
                 iconSize: 60.0,
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>SecondScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ScaleAnimationRoute()));
                 },
               ),
             ],
@@ -155,7 +155,36 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
   }
 }
 
-class SecondScreen extends StatelessWidget{
+class ScaleAnimationRoute extends StatefulWidget {
+  const ScaleAnimationRoute({Key? key}) : super(key: key);
+  
+  @override
+  _ScaleAnimationRouteState createState() => _ScaleAnimationRouteState();
+}
+
+//需要继承TickerProvider，如果有多个AnimationController，则应该使用TickerProviderStateMixin。
+class _ScaleAnimationRouteState extends State<ScaleAnimationRoute>
+    with SingleTickerProviderStateMixin {
+  late Animation<double> animation;
+  late AnimationController controller;
+  
+  @override
+  initState() {
+    super.initState();
+    controller = AnimationController(
+        duration: const Duration(seconds: 3), vsync: this);
+    //使用弹性曲线
+    animation=CurvedAnimation(parent: controller, curve: Curves.bounceIn);
+    //图片宽高从0变到300
+    animation = Tween(begin: 0.0, end: 400.0).animate(animation)
+      ..addListener(() {
+        setState(() => {});
+      });
+    //启动动画
+    controller.forward();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     var _themeColor = Colors.yellow; 
@@ -167,19 +196,45 @@ class SecondScreen extends StatelessWidget{
       ),
       child: Scaffold(
         appBar:AppBar(title:Text('动画')),
-        body:Center(child:RaisedButton(
-            child:RaisedButton(
-              child:Text('返回'),
-              color:  Color.fromARGB(255, 248, 237, 17),
-              onPressed: (){
-                Navigator.pop(context);
-              },
-            ),
-            onPressed: (){
-                Navigator.pop(context);
-              },
-        ))
-     ),
-    );
+        
+        body:Center(
+          
+          
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+
+              Image.network(
+                "https://p2.ssl.qhimgs1.com/sdr/400__/t01eef41fecd78bc0c8.jpg",
+                width: animation.value,
+                height: animation.value,
+              ),
+              RaisedButton(
+                child:RaisedButton(
+                  child:Text('返回'),
+                  color:  Color.fromARGB(255, 248, 237, 17),
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                ),
+                onPressed: (){
+                    Navigator.pop(context);
+                  },
+              ),
+            ],
+        )
+      ),
+    ),
+   );
+  }
+  
+  @override
+  dispose() {
+    //路由销毁时需要释放动画资源
+    controller.dispose();
+    super.dispose();
   }
 }
+
+
+
