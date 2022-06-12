@@ -30,7 +30,61 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+class MyDrawer extends StatelessWidget {
+  const MyDrawer({
+    Key? key,
+  }) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: MediaQuery.removePadding(
+        context: context,
+        //移除抽屉菜单顶部默认留白
+        removeTop: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ClipOval(
+                      child: Image.network(
+                        "https://c-ssl.duitang.com/uploads/item/201910/26/20191026092222_vvqkl.thumb.1000_0.jpg",
+                        width: 100,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "user用户",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  ListTile(
+                    leading: const Icon(Icons.add),
+                    title: const Text('Add account'),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Manage accounts'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 class ThemeTestRoute extends StatefulWidget {
   @override
   _ThemeTestRouteState createState() => _ThemeTestRouteState();
@@ -70,8 +124,18 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text("计数器"),
-        ),
-                bottomNavigationBar: BottomAppBar(
+          leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.dashboard, color: Colors.black), //自定义图标
+            onPressed: () {
+              // 打开抽屉菜单  
+              Scaffold.of(context).openDrawer(); 
+            },
+          );
+          }),
+         ),
+          drawer: MyDrawer(), //抽屉
+          bottomNavigationBar: BottomAppBar(
           color: Colors.white,
           shape: CircularNotchedRectangle(), // 底部导航栏打一个圆形的洞
           child: Row(
@@ -99,7 +163,13 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
             mainAxisAlignment: MainAxisAlignment.spaceAround, //均分底部导航栏横向空间
           ),
         ),
-        body: Center(
+        body: Container(
+           width: double.infinity,
+          decoration: BoxDecoration(
+          image: DecorationImage(
+                image: NetworkImage("http://img.pptjia.com/image/20180316/77511f28d451f1fcf9284023569a1d17.jpg"),
+                fit: BoxFit.fill)),
+
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
           child: Column(
@@ -120,8 +190,11 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
             
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+
+
               const Text(
                 'You have pushed the button this many times:',
+                textScaleFactor: 2,
               ),
               Text(
                 '$_counter',
