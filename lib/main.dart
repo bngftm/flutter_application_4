@@ -143,7 +143,7 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
               // ignore: unnecessary_new
               new IconButton(
                 icon: Icon(Icons.home),
-                iconSize: 60.0,
+                iconSize: 70.0,
                 onPressed: (){
                   setState(() {
                     _counter = 0;
@@ -154,7 +154,7 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
               // ignore: unnecessary_new
               new IconButton(
                 icon: Icon(Icons.business),
-                iconSize: 60.0,
+                iconSize: 70.0,
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>ScaleAnimationRoute()));
                 },
@@ -194,7 +194,11 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
 
               const Text(
                 'You have pushed the button this many times:',
-                textScaleFactor: 2,
+                style: TextStyle(
+                color: Color.fromARGB(255, 5, 80, 15),
+                fontSize: 35.0,
+                height: 3,  
+                fontFamily: "STHupo")
               ),
               Text(
                 '$_counter',
@@ -221,7 +225,6 @@ class _ThemeTestRouteState extends State<ThemeTestRoute> {
           onPressed: _incrementCounter,
           tooltip: 'Increment',
           child: const Icon(Icons.add),
-          
         ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
