@@ -59,7 +59,7 @@ class MyDrawer extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "user用户",
+                    "段yfyf",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
